@@ -1,5 +1,51 @@
 # Domain-Specific Language Pattern
 
+The Domain-Specific Language (DSL) pattern is a design pattern that allows you to create a small, specialized language for a specific domain or problem.
+
+
+```ruby
+
+class Order
+  attr_accessor :items
+
+  def initialize
+    @items = []
+  end
+
+  def add(item, quantity)
+    @items << { item: item, quantity: quantity }
+  end
+
+  def total_cost
+    @items.sum { |item| item[:item].price * item[:quantity] }
+  end
+end
+
+class Item
+  attr_reader :name, :price
+
+  def initialize(name, price)
+    @name = name
+    @price = price
+  end
+end
+
+def order(&block)
+  order = Order.new
+  order.instance_eval(&block)
+  order
+end
+
+my_order = order do
+  add(Item.new("Widget", 10), 3)
+  add(Item.new("Gadget", 15), 2)
+end
+
+puts my_order.total_cost # Output: 75
+
+
+```
+
 ## Problem
 We want to build a convenient syntax for solving problems of a specific domain.
 
