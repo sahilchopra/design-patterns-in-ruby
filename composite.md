@@ -1,4 +1,5 @@
 # Composite Pattern
+The Composite Pattern is a structural design pattern that allows you to compose objects into tree structures to represent part-whole hierarchies. This pattern lets clients treat individual objects and compositions of objects uniformly
 
 ## Problem
 We need to build a hierarchy of tree objects and want to interact with all them the same way, regardless of whether it's a leaf object or not.
@@ -7,6 +8,64 @@ We need to build a hierarchy of tree objects and want to interact with all them 
 There are three main classes in the Composite pattern: the **component**, the **leaf** and the **composite** classes. The **component** is the base class and defines a common interface for all the components. The **leaf** is an indivisible building block of the process. The **composite** is a higher-level component built from subcomponents, so it fulfills a dual role: it is a component and a collection of components. As both composite and leaf classes implement the same interface, they can be used the same way.
 
 ## Example
+```ruby
+# Step 1: Define the Component Interface
+class Component
+  def operation
+    raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+  end
+end
+
+
+# Step 2: Create Leaf Objects
+
+class Leaf < Component
+  def operation
+    "Leaf operation"
+  end
+end
+
+# Step 3: Create Composite Objects
+
+class Composite < Component
+  def initialize
+    @children = []
+  end
+
+  def add(child)
+    @children << child
+  end
+
+  def remove(child)
+    @children.delete(child)
+  end
+
+  def operation
+    results = []
+    @children.each { |child| results << child.operation }
+    "Composite operation with:\n#{results.join("\n")}"
+  end
+end
+
+# Step 4: Client Code
+leaf1 = Leaf.new
+leaf2 = Leaf.new
+
+composite = Composite.new
+composite.add(leaf1)
+composite.add(leaf2)
+
+composite2 = Composite.new
+composite2.add(leaf1)
+composite2.add(leaf2)
+
+composite.add(composite2)
+
+puts composite.operation
+
+```
+
+
 We've been asked to build a system that tracks the manufacturing of cakes, with a key requirement of being able to know how long it takes to bake it. Making a cake is a complicated process, as it involves multiple tasks that might be composed of different subtasks. The whole process could be represented in the following tree:
 
 ```
