@@ -1,5 +1,7 @@
 # Iterator Pattern
 
+The Iterator Pattern is a behavioral design pattern that provides a way to access the elements of an aggregate object (like a collection) sequentially without exposing its underlying representation. 
+
 ## Problem
 We have an aggregate object and we want to provide a way to access its collection of sub-objects without exposing its underlaying representation.
 
