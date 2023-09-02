@@ -1,4 +1,5 @@
 # Composite Pattern
+
 The Composite Pattern is a structural design pattern that allows you to compose objects into tree structures to represent part-whole hierarchies. This pattern lets clients treat individual objects and compositions of objects uniformly
 
 ## Problem
