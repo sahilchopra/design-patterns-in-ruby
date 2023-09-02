@@ -1,7 +1,77 @@
 # Decorator Pattern
 
+The Decorator Pattern is a structural design pattern in Ruby that allows you to dynamically add behavior or responsibilities to objects without modifying their code. It's achieved by creating a set of decorator classes that are used to wrap concrete components.
+
 ## Problem
 We need to vary the responsibilities of an object, adding some features.
+
+
+```ruby
+# 1 Define a Component Interface:
+
+class Component
+  def operation
+    # Define the default behavior here
+  end
+end
+
+# 2 Create a Concrete Component:
+require_relative 'component'
+
+class ConcreteComponent < Component
+  def operation
+    'Concrete Component'
+  end
+end
+
+# 3 Create Decorator Classes:
+
+class Decorator < Component
+  def initialize(component)
+    @component = component
+  end
+
+  def operation
+    @component.operation
+  end
+end
+
+# 4 Create Concrete Decorators:
+# concrete_decorator_a.rb
+require_relative 'decorator'
+
+class ConcreteDecoratorA < Decorator
+  def operation
+    "Decorator A (#{super})"
+  end
+end
+
+# concrete_decorator_b.rb
+require_relative 'decorator'
+
+class ConcreteDecoratorB < Decorator
+  def operation
+    "Decorator B (#{super})"
+  end
+end
+
+# 5 Usage
+
+# main.rb
+require_relative 'concrete_component'
+require_relative 'concrete_decorator_a'
+require_relative 'concrete_decorator_b'
+
+component = ConcreteComponent.new
+decorated_component_a = ConcreteDecoratorA.new(component)
+decorated_component_b = ConcreteDecoratorB.new(component)
+
+puts component.operation # Output: "Concrete Component"
+puts decorated_component_a.operation # Output: "Decorator A (Concrete Component)"
+puts decorated_component_b.operation # Output: "Decorator B (Concrete Component)"
+
+
+```
 
 ## Solution
 In the **Decorator** pattern we create an object that wraps the real one, and implements the same interface and forwarding method calls. However, before delegating to the real object, it performs the additional feature. Since all decorators implement the same core interface, we can build chains of decorators and assemble a combination of features at runtime. 
