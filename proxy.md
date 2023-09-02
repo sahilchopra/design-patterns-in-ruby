@@ -4,6 +4,63 @@
 The Proxy Pattern is a structural design pattern that provides an interface to control access to an object. It involves creating a new class, known as the proxy, which stands in for the real object (the subject) and delegates requests to it, adding some level of control or functionality. 
 
 
+```ruby
+# The Subject Interface defines the common interface for both the RealSubject
+# and the Proxy so that the Proxy can be used wherever the RealSubject is
+# expected.
+class Subject
+  def request
+    raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+  end
+end
+
+# The RealSubject is the real object that the proxy represents.
+class RealSubject < Subject
+  def request
+    puts "RealSubject: Handling the request."
+  end
+end
+
+# The Proxy class stands in for the RealSubject and controls access to it.
+class Proxy < Subject
+  def initialize(real_subject)
+    @real_subject = real_subject
+  end
+
+  # The Proxy forwards requests to the RealSubject, adding additional
+  # functionality if needed.
+  def request
+    if check_access
+      @real_subject.request
+      log_access
+    else
+      puts "Proxy: Access denied."
+    end
+  end
+
+  private
+
+  def check_access
+    # Additional logic for access control.
+    true
+  end
+
+  def log_access
+    puts "Proxy: Logging the request."
+  end
+end
+
+# Client code can interact with the Proxy as if it's the RealSubject.
+real_subject = RealSubject.new
+proxy = Proxy.new(real_subject)
+
+puts "Client: Executing the proxy's request method."
+proxy.request
+
+
+```
+
+
 ## Problem
 We want to have more control over how and when we access a certain object.
 
