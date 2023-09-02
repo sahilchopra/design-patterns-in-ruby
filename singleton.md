@@ -1,5 +1,36 @@
 # Singleton Pattern
 
+```ruby
+
+class MySingleton
+  # Create a class variable to hold the single instance
+  @@instance = nil
+
+  # Define a private constructor to prevent external instantiation
+  private_class_method :new
+
+  # Provide a class method to access or create the instance
+  def self.instance
+    @@instance ||= new
+  end
+
+  # Define other methods as needed
+  def some_method
+    puts "Singleton method called."
+  end
+end
+
+# Usage
+singleton = MySingleton.instance
+singleton.some_method # Output: "Singleton method called."
+
+# Attempting to create a new instance will result in an error
+# new_instance = MySingleton.new # Error: private method `new' called for MySingleton:Class
+
+
+```
+
+
 ## Problem
 We need to have a single instance of a certain class across the whole application.
 
