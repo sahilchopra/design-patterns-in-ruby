@@ -1,5 +1,9 @@
 # Proxy Pattern
 
+
+The Proxy Pattern is a structural design pattern that provides an interface to control access to an object. It involves creating a new class, known as the proxy, which stands in for the real object (the subject) and delegates requests to it, adding some level of control or functionality. 
+
+
 ## Problem
 We want to have more control over how and when we access a certain object.
 
