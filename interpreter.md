@@ -2,6 +2,66 @@
 
 The Interpreter Pattern is a behavioral design pattern that is used to define a grammar for a language and provides an interpreter to interpret sentences in that language. 
 
+
+```ruby
+
+# Terminal Expression
+class Number
+  def initialize(value)
+    @value = value
+  end
+
+  def interpret
+    @value
+  end
+end
+
+# Non-Terminal Expression
+class Add
+  def initialize(left, right)
+    @left = left
+    @right = right
+  end
+
+  def interpret
+    @left.interpret + @right.interpret
+  end
+end
+
+# Create the Context:
+
+class Context
+  def initialize
+    @variables = {}
+  end
+
+  def set_variable(name, value)
+    @variables[name] = value
+  end
+
+  def get_variable(name)
+    @variables[name]
+  end
+end
+# Define the Parser:
+class Parser
+  def parse(tokens)
+    # Implement the parsing logic here to create the AST
+  end
+end
+
+# Use the Interpreter:
+context = Context.new
+context.set_variable('x', 10)
+context.set_variable('y', 5)
+
+expression = Add.new(Number.new(context.get_variable('x')), Number.new(context.get_variable('y')))
+result = expression.interpret
+
+puts "Result: #{result}" # Output: Result: 15
+
+```
+
 ## Problem
 We need a specialized language to solve a well defined problem of know domain.
 
