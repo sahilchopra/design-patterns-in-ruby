@@ -1,5 +1,7 @@
 # Strategy Pattern
 
+The Strategy Pattern is a behavioral design pattern that allows you to define a family of interchangeable algorithms, encapsulate each one, and make them interchangeable. This pattern is useful when you have a set of algorithms and want to select one of them dynamically at runtime.
+
 ## Problem
 We need to vary part of an algorithm— something we previously solved using the Template Method pattern— although we want to avoid its drawbacks, introduced by the fact that it's built around inheritance.
 
