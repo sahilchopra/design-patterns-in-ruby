@@ -1,4 +1,5 @@
 # Command Pattern
+The Command Pattern is a behavioral design pattern that encapsulates a request as an object, thereby allowing for parameterization of clients with queues, requests, and operations. It also provides the ability to support undoable operations.
 
 ## Problem
 We want to perform some specific task without knowing how the whole process works or having any information about the receiver of the request.
@@ -7,95 +8,76 @@ We want to perform some specific task without knowing how the whole process work
 The Command pattern decouples the object that needs to perform a specific task from the one that knows how to do it. It encapsulates all the needed information to do the job into its own object including: who the receiver(s) is(are), the methods to invoke, and the parameters. That way, any object that wants to perform the task only needs to know about the command object interface.
 
 ## Example
-Let's consider a button implementation of some GUI framework, which has a method called upon button click.
+
 
 ```ruby
-class SlickButton
-
-  # Lots of button drawing and management
-  # code omitted...
-
-  def on_button_push
-    # Do something when the button is pushed
-  end
-end
-```
-
-We could extend the button class that overrides the `on_button_push` method to perform certain actions whenever a user clicks it. For example, if the button's purpose is saving a document, we could do something like this:
-
-```ruby
-class SaveButton < SlickButton
-  def on_button_push
-    # Save the current document...
-  end
-end
-```
-
-However, a complex GUI could have hundreds of buttons, which means that we would end up having several hundreds of subclasses of our button. There is an easier way. We can factor out the code that performs the action into its own object, which implements a simple interface. Then, we can refactor our button's implementation to receive the command object as a parameter and call it when it's clicked.
-
-```ruby
-class SaveCommand
+# 1 Define a Command Interface
+class Command
   def execute
-    # Save the current document...
+    raise NotImplementedError, "#{self.class} must implement the execute method"
   end
 end
 
-class SlickButton
-  attr_accessor :command
 
-  def initialize(command)
-    @command = command
-  end
+# 2 Create Concrete Command Classes
 
-  def on_button_push
-    @command.execute if @command
-  end
-end
-
-save_button = SlickButton.new(SaveCommand.new)
-```
-
-The Command pattern is pretty useful if we need to implement **undo** feature. All we need to do is implement the `unexecute` method in our command object. For example, this is how we would implement creating a file:
-
-```ruby
-class CreateFile < Command
-  def initialize(path, contents)
-    super "Create file: #{path}"
-    @path = path
-    @contents = contents
+class LightOnCommand < Command
+  def initialize(light)
+    @light = light
   end
 
   def execute
-    f = File.open(@path, "w")
-    f.write(@contents)
-    f.close
-  end
-
-  def unexecute
-    File.delete(@path)
+    @light.turn_on
   end
 end
-```
 
-Another situation where the command pattern is really handy is in installation programs. Combining it with the **composite** pattern, we can store a list of tasks to be performed:
+class LightOffCommand < Command
+  def initialize(light)
+    @light = light
+  end
 
-```ruby
-class CompositeCommand < Command
+  def execute
+    @light.turn_off
+  end
+end
+
+# 3 Create an Invoker
+
+class RemoteControl
   def initialize
     @commands = []
   end
 
-  def add_command(cmd)
-    @commands << cmd
+  def add_command(command)
+    @commands << command
   end
 
-  def execute
-    @commands.each {|cmd| cmd.execute}
+  def press_button
+    @commands.each(&:execute)
   end
 end
 
-cmds = CompositeCommand.new
-cmds.add_command(CreateFile.new('file1.txt', "hello world\n"))
-cmds.add_command(CopyFile.new('file1.txt', 'file2.txt'))
-cmds.add_command(DeleteFile.new('file1.txt'))
+
+# 4 Create Receiver Objects
+class Light
+  def turn_on
+    puts 'Light is on'
+  end
+
+  def turn_off
+    puts 'Light is off'
+  end
+end
+
+
+# 5 Client Code:
+light = Light.new
+light_on = LightOnCommand.new(light)
+light_off = LightOffCommand.new(light)
+
+remote = RemoteControl.new
+remote.add_command(light_on)
+remote.add_command(light_off)
+
+remote.press_button
 ```
