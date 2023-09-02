@@ -1,5 +1,7 @@
 # Template Method Pattern
 
+The Template Method Pattern is a behavioral design pattern that defines the skeleton of an algorithm in a method but lets subclasses override specific steps of the algorithm without changing its structure.
+
 ## Problem
 We have a complex bit of code, but somewhere in the middle there is a bit that needs to vary.
 
