@@ -1,5 +1,7 @@
 # Adapter Pattern
 
+The Adapter Pattern is a structural design pattern that allows objects with incompatible interfaces to work together.
+
 ## Problem
 We want an object talk to some other object but their interfaces don't match.
 
