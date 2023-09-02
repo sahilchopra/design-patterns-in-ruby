@@ -2,6 +2,66 @@
 
 The Template Method Pattern is a behavioral design pattern that defines the skeleton of an algorithm in a method but lets subclasses override specific steps of the algorithm without changing its structure.
 
+```ruby
+
+class AbstractClass
+  def template_method
+    step1
+    step2
+    step3
+  end
+
+  def step1
+    raise NotImplementedError, "Subclasses must implement step1"
+  end
+
+  def step2
+    raise NotImplementedError, "Subclasses must implement step2"
+  end
+
+  def step3
+    raise NotImplementedError, "Subclasses must implement step3"
+  end
+end
+
+
+
+class ConcreteClassA < AbstractClass
+  def step1
+    puts "ConcreteClassA: Step 1"
+  end
+
+  def step2
+    puts "ConcreteClassA: Step 2"
+  end
+end
+
+class ConcreteClassB < AbstractClass
+  def step1
+    puts "ConcreteClassB: Step 1"
+  end
+
+  def step3
+    puts "ConcreteClassB: Step 3"
+  end
+end
+
+
+concrete_a = ConcreteClassA.new
+concrete_a.template_method
+
+concrete_b = ConcreteClassB.new
+concrete_b.template_method
+
+
+ConcreteClassA: Step 1
+ConcreteClassA: Step 2
+
+ConcreteClassB: Step 1
+ConcreteClassB: Step 3
+
+```
+
 ## Problem
 We have a complex bit of code, but somewhere in the middle there is a bit that needs to vary.
 
